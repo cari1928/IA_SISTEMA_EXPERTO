@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Radogan
+ * @author AlphaGo
  */
 public class BaseConocimientos implements Serializable {
 

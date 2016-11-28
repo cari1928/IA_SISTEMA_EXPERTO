@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Radogan
+ * @author AlphaGo
  */
 public class BaseHechos {
 

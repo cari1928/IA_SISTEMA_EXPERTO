@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Radogan
+ * @author AlphaGo
  */
 public class GestionArchivo {
 

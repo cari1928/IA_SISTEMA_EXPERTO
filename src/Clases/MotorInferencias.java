@@ -1,11 +1,10 @@
 package Clases;
 
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  *
- * @author Radogan
+ * @author AlphaGo
  */
 public class MotorInferencias {
 

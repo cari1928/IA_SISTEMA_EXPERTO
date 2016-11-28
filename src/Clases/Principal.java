@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Radogan
+ * @author AlphaGo
  */
 public class Principal {
 
@@ -19,9 +19,8 @@ public class Principal {
         boolean flag = true;
         ArrayList<String> hechos_iniciales = new ArrayList<>(0);
 
-
+        JOptionPane.showMessageDialog(null, "Se solicitarán los Hechos Iniciales");
         while (flag) {
-            JOptionPane.showMessageDialog(null, "Se solicitarán los Hechos Iniciales");
             String dato = JOptionPane.showInputDialog("Ingresa un hecho o escribe 0 para iniciar el proceso");
 
             try {
