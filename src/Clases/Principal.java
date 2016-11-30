@@ -11,8 +11,15 @@ public class Principal {
 
     public static void main(String[] args) {
         GestionArchivo manager_file = new GestionArchivo();
-        MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos());
-        JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
+
+        try {
+//            manager_file.escribir(); //para modificar el archivo maestro con las nuevas reglas
+
+            MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos());
+            JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static BaseHechos pedirDatos() {

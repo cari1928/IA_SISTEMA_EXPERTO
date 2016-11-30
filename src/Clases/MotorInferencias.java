@@ -1,6 +1,7 @@
 package Clases;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,6 +11,7 @@ public class MotorInferencias {
 
     ArrayList<BaseConocimientos> base_conocimientos;
     BaseHechos base_hechos;
+    ArrayList<BaseConocimientos> listaPosible;
 
     public MotorInferencias(ArrayList<BaseConocimientos> base_conocimientos, BaseHechos base_hechos) {
         super();
@@ -22,6 +24,7 @@ public class MotorInferencias {
         ArrayList<Integer> conjuntoConflicto = new ArrayList<>();
         conjuntoConflicto.add(0); //algoritmo 3.2 linea 1
         BaseConocimientos nuevosHechos;
+        String hechoUsuario;
 
         while (!Contenida() && !Vacio(conjuntoConflicto)) {
             conjuntoConflicto = equiparacion();
@@ -38,13 +41,23 @@ public class MotorInferencias {
         if (Contenida()) {
             return "exito";
         } else {
-            return "fracaso";
+            if (listaPosible.size() > 0) {
+                hechoUsuario = JOptionPane.showInputDialog("Ingrese la premisa faltante");
+                actualizarBH(hechoUsuario);
+                return encadenamientoAdelante();
+            } else {
+                return "fracaso";
+            }
         }
     }
 
     private BaseConocimientos aplicar(int regla) {
         base_conocimientos.get(regla).getAntecedentes().add("*");
         return base_conocimientos.get(regla);
+    }
+
+    private void actualizarBH(String p_hecho) {
+        base_hechos.getBase_hechos().add(p_hecho);
     }
 
     private void actualizarBH(BaseConocimientos p_regla) {
@@ -70,16 +83,16 @@ public class MotorInferencias {
         int cont;
         String elementoAntecedente;
         String elementoBH;
+        listaPosible = new ArrayList<>();
+        boolean p;
 
         //recorrer todas las reglas
         for (int i = 0; i < base_conocimientos.size(); i++) {
             //se obtienen los antecedentes
+            p = true;
             tmp_antecedentes = base_conocimientos.get(i).getAntecedentes();
 
-            //revisa si el número de hechos es mayor igual al número de antecedentes
-            //Se hace para no hacer una revisión innecesaria
-            if (bh.size() >= tmp_antecedentes.size()) {
-
+            if (buscaAsterisco(base_conocimientos.get(i))) { //para que no cheque reglas con asterisco
                 cont = 0; //para recorrer los antecedentes
                 while (cont < tmp_antecedentes.size()) {
 
@@ -90,28 +103,40 @@ public class MotorInferencias {
 
                         //si son iguales...
                         if (elementoBH.equals(elementoAntecedente)) {
+
+                            if (!listaPosible.contains(base_conocimientos.get(i)) && buscaAsterisco(base_conocimientos.get(i))) {
+                                listaPosible.add(base_conocimientos.get(i));
+                            }
                             estado = 1; //hubo coincidencia, sale del ciclo, no hay necesidad de revisar lo demás
+                            p &= true;
                             break;
+
                         } else {
                             estado = 0; //no hubo coincidencia, continua el ciclo
                         }
                     }
-
+                    ++cont;
                     if (estado == 0) {
-                        break; //no hubo coincidencia, salta al ciclo principal, para que ni siga checando
-                    } else {
-                        ++cont; //hubo coincidencia, sigue revisando los elemento
+                        p &= false;
                     }
                 }
-
-                if (estado == 1) { //hubo coincidencia
+                if (p) { //hubo coincidencia
                     tmpCconflicto.add(i); //se agrega regla a conjunto conflicto
                 }
             }
         }
-
         return tmpCconflicto;
+    }
 
+    private boolean buscaAsterisco(BaseConocimientos regla) {
+        ArrayList<String> list_antecedentes = regla.getAntecedentes();
+
+        for (int i = 0; i < list_antecedentes.size(); i++) {
+            if (list_antecedentes.get(i).equals("*")) {
+                return false;
+            }
+        }
+        return true; //no encontrò asterisco
     }
 
     public int resolucion(ArrayList<Integer> p_conjuntoConflicto) {
@@ -123,7 +148,8 @@ public class MotorInferencias {
 //        }
 
         //return menorElemento(regla);
-        return 0;
+        
+        return 0; //elemento con menor número en posición 
     }
 
     public int menorElemento(ArrayList< BaseConocimientos> lista) {
