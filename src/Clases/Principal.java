@@ -13,7 +13,7 @@ public class Principal {
         GestionArchivo manager_file = new GestionArchivo();
 
         try {
-//            manager_file.escribir(); //para modificar el archivo maestro con las nuevas reglas
+            manager_file.escribir(); //para modificar el archivo maestro con las nuevas reglas
 
             MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos());
             JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
@@ -34,12 +34,17 @@ public class Principal {
                 int opcion = Integer.parseInt(dato);
                 flag = false;
             } catch (Exception e) {
-                hechos_iniciales.add(dato);
+                hechos_iniciales.add(dato.toLowerCase());
             }
         }
 
-        String meta = JOptionPane.showInputDialog("Ingresa el hecho meta");
+        String meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
         JOptionPane.showMessageDialog(null, "Iniciando Proceso");
+
+        System.out.println("\nBase de hechos: " + hechos_iniciales);
+        System.out.println("Hecho meta: " + meta + "\n");
+        System.out.println("Encadenamiento Hacia Adelante:");
+
         return new BaseHechos(hechos_iniciales, meta);
     }
 }

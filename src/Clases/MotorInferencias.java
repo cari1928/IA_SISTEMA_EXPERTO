@@ -17,7 +17,6 @@ public class MotorInferencias {
         super();
         this.base_conocimientos = base_conocimientos;
         this.base_hechos = base_hechos; //algoritmo 3.2 linea 1
-
     }
 
     public String encadenamientoAdelante() {
@@ -29,12 +28,18 @@ public class MotorInferencias {
         while (!Contenida() && !Vacio(conjuntoConflicto)) {
             conjuntoConflicto = equiparacion();
 
+            System.out.println("Conjunto conflicto: " + conjuntoConflicto);
+
             if (!Vacio(conjuntoConflicto)) {
                 int r = resolucion(conjuntoConflicto);
+                System.out.println("Regla: " + r);
 
                 nuevosHechos = aplicar(conjuntoConflicto.get(r));
-                actualizarBH(nuevosHechos);
-                System.out.println(base_hechos.getBase_hechos());
+
+                if (!base_hechos.getBase_hechos().contains(nuevosHechos.getConsecuente())) {
+                    actualizarBH(nuevosHechos);
+                }
+                System.out.println("BH: " + base_hechos.getBase_hechos() + "\n");
             }
         }
 
@@ -42,13 +47,22 @@ public class MotorInferencias {
             return "exito";
         } else {
             if (listaPosible.size() > 0) {
-                hechoUsuario = JOptionPane.showInputDialog("Ingrese la premisa faltante");
-                actualizarBH(hechoUsuario);
+                hechoUsuario = JOptionPane.showInputDialog("Hace falta un antecedente, por favor ingréselo");
+
+                if (!buscaHecho(hechoUsuario)) {
+                    actualizarBH(hechoUsuario);
+                }
                 return encadenamientoAdelante();
             } else {
                 return "fracaso";
             }
         }
+    }
+
+    private boolean buscaHecho(String hecho) {
+        ArrayList<String> tmpBH = base_hechos.getBase_hechos();
+
+        return tmpBH.contains(hecho);
     }
 
     private BaseConocimientos aplicar(int regla) {
@@ -148,7 +162,7 @@ public class MotorInferencias {
 //        }
 
         //return menorElemento(regla);
-        
+
         return 0; //elemento con menor número en posición 
     }
 

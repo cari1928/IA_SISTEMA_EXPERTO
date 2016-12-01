@@ -1,4 +1,8 @@
-a b - c
-b c - d
-a f d - e
-g e - h
+a e - w
+d w - a
+f b - z
+a g - d
+w b - k
+h w - z
+c d - f
+k g l - m

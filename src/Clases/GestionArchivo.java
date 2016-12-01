@@ -45,8 +45,10 @@ public class GestionArchivo {
 
         try {
             try (ObjectInputStream archivo = new ObjectInputStream(new FileInputStream(ARCHIVO_MAESTRO))) {
+                System.out.println("Base de conocimientos:");
                 for (int i = 0; i < 9; i++) {
                     tmpListaReglas.add((BaseConocimientos) archivo.readObject());
+                    System.out.println(tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -76,9 +78,9 @@ public class GestionArchivo {
                     flag = true;
                 } else {
                     if (!flag) { //en arreglo antecedente
-                        tmpAntecedentes.add(dato);
+                        tmpAntecedentes.add(dato.toLowerCase());
                     } else { //consecuente
-                        tmpListaReglas.add(new BaseConocimientos(tmpAntecedentes, dato));
+                        tmpListaReglas.add(new BaseConocimientos(tmpAntecedentes, dato.toLowerCase()));
                         flag = false;
                         tmpAntecedentes = new ArrayList<>(0);
                     }
