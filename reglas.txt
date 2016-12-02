@@ -1,8 +1,4 @@
-a e - w
-d w - a
-f b - z
-a g - d
-w b - k
-h w - z
-c d - f
-k g l - m
+p b c - r
+r c - w
+w b - z
+z s - a

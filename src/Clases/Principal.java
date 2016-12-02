@@ -34,7 +34,9 @@ public class Principal {
                 int opcion = Integer.parseInt(dato);
                 flag = false;
             } catch (Exception e) {
-                hechos_iniciales.add(dato.toLowerCase());
+                if (!dato.equals("")) {
+                    hechos_iniciales.add(dato.toLowerCase());
+                }
             }
         }
 

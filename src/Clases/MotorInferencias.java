@@ -32,9 +32,11 @@ public class MotorInferencias {
 
             if (!Vacio(conjuntoConflicto)) {
                 int r = resolucion(conjuntoConflicto);
-                System.out.println("Regla: " + r);
+
+                System.out.println("Regla: " + conjuntoConflicto.get(r));
 
                 nuevosHechos = aplicar(conjuntoConflicto.get(r));
+
 
                 if (!base_hechos.getBase_hechos().contains(nuevosHechos.getConsecuente())) {
                     actualizarBH(nuevosHechos);

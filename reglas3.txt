@@ -1,0 +1,10 @@
+b d e - f
+d g - a
+c f - a
+b - x
+d - c
+a x - h
+c - d
+x c - a
+x b - d
+
