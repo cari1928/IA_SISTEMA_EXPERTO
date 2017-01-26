@@ -37,7 +37,6 @@ public class MotorInferencias {
 
                 nuevosHechos = aplicar(conjuntoConflicto.get(r));
 
-
                 if (!base_hechos.getBase_hechos().contains(nuevosHechos.getConsecuente())) {
                     actualizarBH(nuevosHechos);
                 }
@@ -69,6 +68,7 @@ public class MotorInferencias {
 
     private BaseConocimientos aplicar(int regla) {
         base_conocimientos.get(regla).getAntecedentes().add("*");
+
         return base_conocimientos.get(regla);
     }
 
@@ -164,7 +164,7 @@ public class MotorInferencias {
 //        }
 
         //return menorElemento(regla);
-
+        
         return 0; //elemento con menor número en posición 
     }
 

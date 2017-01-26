@@ -1,4 +1,4 @@
-p b c - r
+p b c - r 
 r c - w
 w b - z
 z s - a

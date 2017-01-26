@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -18,21 +19,32 @@ public class GestionArchivo {
 
     BaseConocimientos base_conocimientos;
     Scanner escritor;
+
+    /**
+     * Constante para indicar el nombre del archivo maestro
+     */
     public static final String ARCHIVO_MAESTRO = "archivo_maestro";
 
     /**
      * Método usado para guardar los datos en el archivo binario Solo se utiliza
      * cuando el archivo de texto se modifica
      *
-     * @exception En caso de error de lectura
+     * @return boolean Indica si la sintáxis de las reglas es correcta
+     * @throws java.io.IOException Para en caso de error de lectura
      */
-    public void escribir() throws IOException {
+    public boolean escribir() throws IOException {
         ArrayList<BaseConocimientos> tmpListaReglas = leerReglas();
+        
+        if(tmpListaReglas == null) { //sintáxis incorrecta
+            return false;
+        }
+        
         try (ObjectOutputStream archivo = new ObjectOutputStream(new FileOutputStream(ARCHIVO_MAESTRO))) {
             for (int i = 0; i < tmpListaReglas.size(); i++) {
                 archivo.writeObject(tmpListaReglas.get(i));
             }
         }
+        return true;
     }
 
     /**
@@ -68,8 +80,14 @@ public class GestionArchivo {
         boolean flag = false;
         ArrayList<BaseConocimientos> tmpListaReglas = new ArrayList<>(0);
         ArrayList<String> tmpAntecedentes = new ArrayList<>(0);
+
         try {
+            Scanner verificador = new Scanner(new FileReader(new File("reglas.txt")));
             escritor = new Scanner(new FileReader(new File("reglas.txt")));
+            
+            if(!verificaReglas(verificador)) { //verifica que la sintáxis de las reglas sea la correcta
+                return null;
+            }
 
             while (escritor.hasNext()) {
                 dato = escritor.next();
@@ -95,7 +113,53 @@ public class GestionArchivo {
         }
     }
 
+    /**
+     * Verifica que la sintáxis escrita en el archivo reglas.txt sea la correcta
+     * @param verificador Scanner relacionado con reglas.txt para poder obtener dichas reglas del archivo
+     * @return boolean false = sintáxis incorrecta
+     */
+    public boolean verificaReglas(Scanner verificador) {
+        String regla;
+        StringTokenizer st;
+        String[] elementos;
+        int count;
+
+        while (verificador.hasNext()) {
+            regla = verificador.nextLine(); //obtiene la regla
+            
+            count = 0;
+            for (int i = 0; i < regla.length(); i++) {
+                if(regla.charAt(i) == '-') {
+                  ++count;
+                }
+            }
+            if(count != 1) {
+                return false;
+            }
+            
+            elementos = regla.split("-"); //separa la regla por -
+
+            //hay más de un guión o ninguno en la regla
+            if (elementos.length != 2) {
+                return false;
+            }
+
+            st = new StringTokenizer(elementos[1]); //porque elementos debe tener 2 casillas
+            if (st.countTokens() != 1) { //solo debe haber un consecuente
+                return false;
+            }
+            //si llega a este punto, la sentencia es correcta
+        }
+        return true;
+    }
+
+    /**
+     * @param args
+     * @throws IOException
+     * @deprecated Únicamente para pruebas
+     */
     public static void main(String[] args) throws IOException {
         new GestionArchivo().leerMaestro();
     }
+
 }

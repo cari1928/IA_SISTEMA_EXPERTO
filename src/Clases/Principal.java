@@ -9,19 +9,31 @@ import javax.swing.JOptionPane;
  */
 public class Principal {
 
+    /**
+     * Inicio de todo el programa
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         GestionArchivo manager_file = new GestionArchivo();
 
         try {
-            manager_file.escribir(); //para modificar el archivo maestro con las nuevas reglas
-
-            MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos());
-            JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
+            //para modificar el archivo maestro con las nuevas reglas
+            if(!manager_file.escribir()) { 
+                JOptionPane.showMessageDialog(null, "ERROR, la sintáxis de las reglas es incorrecta");
+            } else {
+                MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos());
+                JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
+            }            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Ingreso de los hechos iniciales y el hecho meta
+     * @return
+     */
     public static BaseHechos pedirDatos() {
         boolean flag = true;
         ArrayList<String> hechos_iniciales = new ArrayList<>(0);
@@ -32,7 +44,13 @@ public class Principal {
 
             try {
                 int opcion = Integer.parseInt(dato);
-                flag = false;
+
+                if (opcion == 0) {
+                    flag = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Valor no admitido");
+                }
+
             } catch (Exception e) {
                 if (!dato.equals("")) {
                     hechos_iniciales.add(dato.toLowerCase());
