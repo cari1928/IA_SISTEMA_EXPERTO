@@ -128,7 +128,7 @@ public class GestionArchivo {
             regla = verificador.nextLine(); //obtiene la regla
             
             count = 0;
-            for (int i = 0; i < regla.length(); i++) {
+            for (int i = 0; i < regla.length(); i++) { //checa que solo haya un - en la regla
                 if(regla.charAt(i) == '-') {
                   ++count;
                 }
@@ -138,13 +138,13 @@ public class GestionArchivo {
             }
             
             elementos = regla.split("-"); //separa la regla por -
-
-            //hay más de un guión o ninguno en la regla
+            //hay más de un guión y éste está seguido de más elementos
+            //o no hay -
             if (elementos.length != 2) {
                 return false;
             }
 
-            st = new StringTokenizer(elementos[1]); //porque elementos debe tener 2 casillas
+            st = new StringTokenizer(elementos[1]); //elementos debe tener 2 casillas: antecedentes y consecuentes 
             if (st.countTokens() != 1) { //solo debe haber un consecuente
                 return false;
             }
