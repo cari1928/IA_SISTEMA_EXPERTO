@@ -23,7 +23,7 @@ public class MotorInferencias {
         ArrayList<Integer> conjuntoConflicto = new ArrayList<>();
         conjuntoConflicto.add(0); //algoritmo 3.2 linea 1
         BaseConocimientos nuevosHechos;
-        String hechoUsuario;
+        String hechoUsuario; //hecho solicitado al usuario
 
         while (!Contenida() && !Vacio(conjuntoConflicto)) {
             conjuntoConflicto = equiparacion();
@@ -55,7 +55,21 @@ public class MotorInferencias {
                 }
                 return encadenamientoAdelante();
             } else {
-                return "fracaso";
+                if (base_hechos.getMeta() == null) {
+
+                    if (!VacioBH(base_hechos.getBase_hechos())) {
+                        String opt = JOptionPane.showInputDialog("¿Alguno es el hecho meta?\n" + base_hechos.getBase_hechos() + "\n1)Si\n2)No");
+                        if (opt.equals("1")) { //si
+                            return "exito";
+                        } else {
+                            return "fracaso";
+                        }
+                    } else {
+                        return "fracaso";
+                    }
+                } else {
+                    return "exito";
+                }
             }
         }
     }
@@ -84,11 +98,19 @@ public class MotorInferencias {
         ArrayList<String> tmp = base_hechos.getBase_hechos(); //obtengo bh
         String meta = base_hechos.getMeta(); //obtengo la meta
 
-        return tmp.contains(meta);
+        if (meta == null) { //sin meta
+            return false;
+        } else { //con meta
+            return tmp.contains(meta);
+        }
     }
 
     private boolean Vacio(ArrayList<Integer> p_conjuntoConflicto) {
         return p_conjuntoConflicto.isEmpty();
+    }
+
+    private boolean VacioBH(ArrayList<String> p_baseHechos) {
+        return p_baseHechos.isEmpty();
     }
 
     private ArrayList<Integer> equiparacion() {
@@ -162,7 +184,6 @@ public class MotorInferencias {
 //            int posicion_regla = p_conjuntoConflicto.get(i); //se obtiene la regla del conjunto conflicto
 //            regla.add(base_conocimientos.get(posicion_regla));
 //        }
-
         //return menorElemento(regla);
         
         return 0; //elemento con menor número en posición 

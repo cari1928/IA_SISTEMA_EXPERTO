@@ -9,15 +9,18 @@ import javax.swing.JOptionPane;
  */
 public class Principal {
 
+    public static final String MSG1 = "Seleccione un tipo de Encadenamiento:\n1)Adelante\n2)Salir";
+    public static final String MSG2 = "Seleccione:\n1)Con meta\n2)Sin meta";
+
     /**
      * Inicio de todo el programa
      *
      * @param args
      */
     public static void main(String[] args) {
-        GestionArchivo manager_file = new GestionArchivo();
+        GestionArchivo manager_file = new GestionArchivo(); //última versión funcional        
         boolean flag = true;
-        Integer opt;
+        int opt;
 
         try {
             //para modificar el archivo maestro con las nuevas reglas
@@ -25,20 +28,29 @@ public class Principal {
                 JOptionPane.showMessageDialog(null, "ERROR, la sintáxis de las reglas es incorrecta");
             } else {
                 while (flag) {
-                    switch (opciones()) {
+                    switch (opciones(MSG1, 0, 4)) {
                         case 1: //enc. hacia adelante
-                            MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos());
-                            JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
+                            opt = opciones(MSG2, 0, 3);
+                            if (opt == 1) { //con meta
+//                                MotorInferencias mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
+//                                JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
+                                MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
+                                JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
+                                break;
+                            }
+
+                            //sin meta
+                            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
+                            JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
                             break;
-                        case 2:
-                            break;
-                        case 3:
+//                        case 2: //enc. hacia atrás
+//                            break;
+                        case 2: //salida
                             flag = false;
                             JOptionPane.showMessageDialog(null, "Cerrando el programa...");
                             break;
                     }
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,10 +60,13 @@ public class Principal {
     /**
      * Ingreso de los hechos iniciales y el hecho meta
      *
-     * @return
+     * @param type int Indica si se requiere hecho meta o no
+     * @return BaseHechos Objeto que almacena los hechos iniciales y el hecho
+     * meta
      */
-    public static BaseHechos pedirDatos() {
+    public static BaseHechos pedirDatos(int type) {
         boolean flag = true;
+        String meta;
         ArrayList<String> hechos_iniciales = new ArrayList<>(0);
 
         JOptionPane.showMessageDialog(null, "Se solicitarán los Hechos Iniciales");
@@ -74,25 +89,35 @@ public class Principal {
             }
         }
 
-        String meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
-        JOptionPane.showMessageDialog(null, "Iniciando Proceso");
+        meta = "Sin meta"; //para mostrarlo en consola
+        if (type == 1) { //con meta
+            meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
+        }
 
+        JOptionPane.showMessageDialog(null, "Iniciando Proceso");
         System.out.println("\nBase de hechos: " + hechos_iniciales);
         System.out.println("Hecho meta: " + meta + "\n");
         System.out.println("Encadenamiento Hacia Adelante:");
 
+        if (type == 2) { //sin meta
+            meta = null;
+        }
+
         return new BaseHechos(hechos_iniciales, meta);
     }
 
-    public static Integer opciones() {
+    public static Integer opciones(String msg, int lim_inf, int lim_sup) {
         while (true) {
             try {
-                String tipo = JOptionPane.showInputDialog("Seleccione un tipo de Encadenamiento:\n1)Adelante\n2)Atrás\n3)Salir");
+                String tipo = JOptionPane.showInputDialog(msg);
                 int prueba = Integer.parseInt(tipo);
-                if (prueba > 0 && prueba < 4) {
+                if (prueba > lim_inf && prueba < lim_sup) {
                     return prueba;
+                } else {
+                    JOptionPane.showMessageDialog(null, "ERROR, ingrese datos válidos");
                 }
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERROR, ingrese datos válidos");
             }
         }
     }
