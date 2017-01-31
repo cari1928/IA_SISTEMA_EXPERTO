@@ -36,19 +36,14 @@ public class GestionArchivo {
      * @return boolean Indica si la sintáxis de las reglas es correcta
      * @throws java.io.IOException Para en caso de error de lectura
      */
-    public boolean escribir(ArrayList<BaseConocimientos> p_listaReglas) throws IOException {
-        ArrayList<BaseConocimientos> tmpListaReglas = p_listaReglas;
-        boolean flag = true;
+    public boolean escribir() throws IOException {
 
-        if (p_listaReglas == null) {
-            tmpListaReglas = leerReglas();
-            if (tmpListaReglas == null) { //sintáxis incorrecta
-                return false;
-            }
-            flag = false;
+        ArrayList<BaseConocimientos> tmpListaReglas = leerReglas();
+        if (tmpListaReglas == null) { //sintáxis incorrecta
+            return false;
         }
 
-        try (ObjectOutputStream archivo = new ObjectOutputStream(new FileOutputStream(ARCHIVO_MAESTRO, flag))) {
+        try (ObjectOutputStream archivo = new ObjectOutputStream(new FileOutputStream(ARCHIVO_MAESTRO))) {
             for (int i = 0; i < tmpListaReglas.size(); i++) {
                 archivo.writeObject(tmpListaReglas.get(i));
             }

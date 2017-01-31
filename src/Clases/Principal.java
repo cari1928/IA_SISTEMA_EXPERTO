@@ -1,5 +1,6 @@
 package Clases;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -9,7 +10,20 @@ import javax.swing.JOptionPane;
  */
 public class Principal {
 
-    public static final String MSG1 = "Seleccione un tipo de Encadenamiento:\n1)Adelante\n2)Salir";
+    /**
+     * Contenido del menú principal
+     */
+    public static final String MSG1 = "Seleccione una opción:"
+            + "\n1) Añadir Meta"
+            + "\n2) Modificar Meta"
+            + "\n3) Eliminar Meta"
+            + "\n4) Encadenamiento hacia Adelante"
+            + "\n5) Encadenamiento hacia Atrás"
+            + "\n6) Salir";
+
+    /**
+     * Contenido del menu Enc. hacia adelante
+     */
     public static final String MSG2 = "Seleccione:\n1)Con meta\n2)Sin meta";
 
     /**
@@ -24,29 +38,26 @@ public class Principal {
 
         try {
             //para modificar el archivo maestro con las nuevas reglas
-            if (!manager_file.escribir(null)) {
+            if (!manager_file.escribir()) {
                 JOptionPane.showMessageDialog(null, "ERROR, la sintáxis de las reglas es incorrecta");
             } else {
                 while (flag) {
-                    switch (opciones(MSG1, 0, 4)) {
-                        case 1: //enc. hacia adelante
-                            opt = opciones(MSG2, 0, 3);
-                            if (opt == 1) { //con meta
-                                MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-                                JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                                break;
-                            }
-
-                            //sin meta
+                    switch (opciones(MSG1, 0, 7)) {
+                        case 1: //añadir meta
+                            añadir_regla();
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4: //enc. hacia adelante
+                            opt = opciones(MSG2, 0, 3); //muestra otro menú de opciones y valida la opción seleccionada
                             MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
                             JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                            
-                            //podría funcionar solo con poner esto, no?
-//                            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-//                            JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                            
                             break;
-                        case 2: //salida
+                        case 5:
+                            break;
+                        case 6: //salida
                             flag = false;
                             JOptionPane.showMessageDialog(null, "Cerrando el programa...");
                             break;
@@ -76,7 +87,6 @@ public class Principal {
 
             try {
                 int opcion = Integer.parseInt(dato);
-
                 if (opcion == 0) {
                     flag = false;
                 } else {
@@ -103,10 +113,19 @@ public class Principal {
         if (type == 2) { //sin meta
             meta = null;
         }
-
         return new BaseHechos(hechos_iniciales, meta);
     }
 
+    /**
+     * Objetivo: Ahorrar código. \nPermite mostrar los menús de forma más
+     * simple. \nLos límites definen cuántas y cuáles opciones serán válidas.
+     * Ej: 0-2 opciones válidas: 1
+     *
+     * @param msg Texto a mostrar dentro del JOPtionPane
+     * @param lim_inf Límite inferior para un ciclo
+     * @param lim_sup Límite superior para un ciclo
+     * @return
+     */
     public static Integer opciones(String msg, int lim_inf, int lim_sup) {
         while (true) {
             try {
@@ -121,5 +140,48 @@ public class Principal {
                 JOptionPane.showMessageDialog(null, "ERROR, ingrese datos válidos");
             }
         }
+    }
+
+    /**
+     * Permite añadir una nueva regla al archivo reglas.txt y archivo maestro
+     *
+     * @throws IOException En caso de que no se pueda realizar la escritura en
+     * el archivo maestro
+     */
+    public static void añadir_regla() throws IOException {
+        ArrayList<String> tmp_antecedentes = new ArrayList<>();
+        ArrayList<BaseConocimientos> tmp_reglas;
+        String consecuente = "", antecedente = "";
+        boolean flag = true;
+
+        while (flag) {
+            try {
+                antecedente = JOptionPane.showInputDialog("Ingrese un antecedente, presione 0 para terminar");
+                int opt = Integer.parseInt(antecedente);
+
+                if (tmp_antecedentes.size() != 0) {
+                    consecuente = JOptionPane.showInputDialog("Ingrese el consecuente");
+                    flag = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "!No ha ingresado antecedentes!");
+                }
+
+            } catch (Exception e) {
+                tmp_antecedentes.add(antecedente);
+            }
+        }
+
+        tmp_reglas = new ArrayList<>();
+        BaseConocimientos bc = new BaseConocimientos();
+        bc.setAntecedentes(tmp_antecedentes);
+        bc.setConsecuente(consecuente);
+        tmp_reglas.add(bc);
+
+        //escribir nueva regla en el archivo .txt 
+        GestionArchivo ga = new GestionArchivo();
+        ga.escrbirRegla(tmp_reglas);
+
+        //escribir nueva regla en archivo maestro
+        ga.escribir();
     }
 }

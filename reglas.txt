@@ -2,4 +2,5 @@ p b c - r
 r c - w
 w b - z
 z s - a
-a b c - d
+a n - a
+r - a
