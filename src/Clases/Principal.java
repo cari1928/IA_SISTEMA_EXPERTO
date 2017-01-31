@@ -34,7 +34,7 @@ public class Principal {
     public static void main(String[] args) {
         GestionArchivo manager_file = new GestionArchivo(); //última versión funcional        
         boolean flag = true;
-        int opt;
+        Integer opt, opt_menu;
 
         try {
             //para modificar el archivo maestro con las nuevas reglas
@@ -44,30 +44,40 @@ public class Principal {
                 while (flag) {
                     System.out.println("-----------------------------------------------------");
                     mostrar_BC();
-                    switch (opciones(MSG1, 0, 7)) {
-                        case 1:
-                            añadir_regla();
-                            break;
-                        case 2:
-                            modificar_regla();
-                            break;
-                        case 3:
-                            eliminar_regla();
-                            break;
+                    opt_menu = opciones(MSG1, 0, 7);
 
-                        case 4: //enc. hacia adelante
-                            opt = opciones(MSG2, 0, 3); //muestra otro menú de opciones y valida la opción seleccionada
-                            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-                            JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                            break;
+                    if (opt_menu == null) {
+                        flag = false;
+                    } else {
+                        switch (opt_menu) {
+                            case 1:
+                                añadir_regla();
+                                break;
+                            case 2:
+                                modificar_regla();
+                                break;
+                            case 3:
+                                eliminar_regla();
+                                break;
 
-                        case 5: //enc. hacia atrás
-                            break;
+                            case 4: //enc. hacia adelante
+                                opt = opciones(MSG2, 0, 3); //muestra otro menú de opciones y valida la opción seleccionada
+                                if (opt == null) { //dio al botón de cancelar ó a la x de salir
+                                    break;
+                                }
 
-                        case 6: //salida
-                            flag = false;
-                            JOptionPane.showMessageDialog(null, "Cerrando el programa...");
-                            break;
+                                MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
+                                JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
+                                break;
+
+                            case 5: //enc. hacia atrás
+                                break;
+
+                            case 6: //salida
+                                flag = false;
+                                JOptionPane.showMessageDialog(null, "Cerrando el programa...");
+                                break;
+                        }
                     }
                 }
             }
@@ -134,9 +144,15 @@ public class Principal {
      * @return
      */
     public static Integer opciones(String msg, int lim_inf, int lim_sup) {
+        String tipo = "";
         while (true) {
             try {
-                String tipo = JOptionPane.showInputDialog(msg);
+                tipo = JOptionPane.showInputDialog(msg);
+
+                if (tipo == null) {
+                    return null;
+                }
+
                 int prueba = Integer.parseInt(tipo);
                 if (prueba > lim_inf && prueba < lim_sup) {
                     return prueba;
@@ -157,13 +173,16 @@ public class Principal {
      */
     public static void añadir_regla() throws IOException {
         ArrayList<BaseConocimientos> tmp_reglas = pedirRegla();
-        //escribir nueva regla en el archivo .txt 
-        GestionArchivo ga = new GestionArchivo();
-        //true para no eliminar los datos ya existentes en el archivo
-        ga.escrbirReglas(tmp_reglas, true);
-        //escribir nueva regla en archivo maestro
-        ga.escribir();
-        JOptionPane.showMessageDialog(null, "Regla añadida correctamente");
+
+        if (tmp_reglas != null) {
+            //escribir nueva regla en el archivo .txt 
+            GestionArchivo ga = new GestionArchivo();
+            //true para no eliminar los datos ya existentes en el archivo
+            ga.escrbirReglas(tmp_reglas, true);
+            //escribir nueva regla en archivo maestro
+            ga.escribir();
+            JOptionPane.showMessageDialog(null, "Regla añadida correctamente");
+        }
     }
 
     /**
@@ -177,13 +196,17 @@ public class Principal {
         while (flag) {
             try {
                 String opt = JOptionPane.showInputDialog("Ingrese el número de la regla a eliminar");
-                int num_opt = Integer.parseInt(opt) - 1;
-                tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
-                tmp_reglas.remove(num_opt); //elimina regla                
-                ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
-                ga.escribir(); //modificar archivo maestro
-                JOptionPane.showMessageDialog(null, "Regla eliminada correctamente");
+
+                if (opt != null) {
+                    int num_opt = Integer.parseInt(opt) - 1;
+                    tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
+                    tmp_reglas.remove(num_opt); //elimina regla                
+                    ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
+                    ga.escribir(); //modificar archivo maestro
+                    JOptionPane.showMessageDialog(null, "Regla eliminada correctamente");
+                }
                 flag = false;
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
             }
@@ -202,14 +225,18 @@ public class Principal {
         while (flag) {
             try {
                 String opt = JOptionPane.showInputDialog("Ingrese el número de la regla a modificar");
-                int num_opt = Integer.parseInt(opt) - 1;
-                tmp_regla = pedirRegla(); //obtener la lista con la regla modificada
-                tmp_reglas = ga.leerReglas(); //obtener todas las reglas
-                tmp_reglas.set(num_opt, tmp_regla.get(0)); //modifica el número de registro indicado
-                ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
-                ga.escribir(); //modificar archivo maestro
-                JOptionPane.showMessageDialog(null, "Regla modificada correctamente");
+
+                if (opt != null) {
+                    int num_opt = Integer.parseInt(opt) - 1;
+                    tmp_regla = pedirRegla(); //obtener la lista con la regla modificada
+                    tmp_reglas = ga.leerReglas(); //obtener todas las reglas
+                    tmp_reglas.set(num_opt, tmp_regla.get(0)); //modifica el número de registro indicado
+                    ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
+                    ga.escribir(); //modificar archivo maestro
+                    JOptionPane.showMessageDialog(null, "Regla modificada correctamente");
+                }
                 flag = false;
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
             }
@@ -229,6 +256,10 @@ public class Principal {
         while (flag) {
             try {
                 antecedente = JOptionPane.showInputDialog("Ingrese un antecedente, presione 0 para terminar");
+                if (antecedente == null) { //presionó Cancelar o la x para salir
+                    return null;
+                }
+
                 int opt_antecedentes = Integer.parseInt(antecedente);
 
                 if (!tmp_antecedentes.isEmpty()) {

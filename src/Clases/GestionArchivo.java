@@ -35,7 +35,6 @@ public class GestionArchivo {
      * @throws java.io.IOException Para en caso de error de lectura
      */
     public boolean escribir() throws IOException {
-
         ArrayList<BaseConocimientos> tmpListaReglas = leerReglas();
         if (tmpListaReglas == null) { //sintáxis incorrecta
             return false;
@@ -65,9 +64,9 @@ public class GestionArchivo {
                     System.out.println(tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente());
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Exception e) {
         }
-        
+
         System.out.println("-----------------------------------------------------");
         return tmpListaReglas;
     }
