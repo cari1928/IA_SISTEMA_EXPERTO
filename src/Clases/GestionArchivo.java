@@ -31,8 +31,6 @@ public class GestionArchivo {
      * Método usado para guardar los datos en el archivo binario maestro Solo se
      * utiliza cuando el archivo de texto se modifica
      *
-     * @param p_listaReglas Ejecución normal = null. Para añadir nueva regla es
-     * ArrayList(BaseConocimientos)
      * @return boolean Indica si la sintáxis de las reglas es correcta
      * @throws java.io.IOException Para en caso de error de lectura
      */
@@ -168,20 +166,33 @@ public class GestionArchivo {
         new GestionArchivo().leerMaestro();
     }
 
-    public void escrbirRegla(ArrayList<BaseConocimientos> p_listaReglas) {
+    /**
+     * Añade las reglas contenidas en un ArrayList<BaseConocimientos> al archivo
+     * reglas.txt
+     *
+     * @param p_listaReglas ArrayList<BaseConocimientos>
+     */
+    public void escrbirReglas(ArrayList<BaseConocimientos> p_listaReglas, boolean pReescribir) {
         try {
-            FileWriter fw = new FileWriter("reglas.txt", true);
+            FileWriter fw = new FileWriter("reglas.txt", pReescribir);
             PrintWriter pw = new PrintWriter(fw);
 
-            int num_antecedentes = p_listaReglas.get(0).antecedentes.size();
-            pw.println();
-            for (int i = 0; i < num_antecedentes; i++) {
-                pw.print(p_listaReglas.get(0).antecedentes.get(i) + " ");
-            }
-            pw.print("- ");
-            pw.print(p_listaReglas.get(0).consecuente);
-            fw.close();
+            for (int j = 0; j < p_listaReglas.size(); j++) {
+                int num_antecedentes = p_listaReglas.get(j).antecedentes.size();
 
+                if (!pReescribir && j == 0) {
+
+                } else {
+                    pw.println();
+                }
+
+                for (int i = 0; i < num_antecedentes; i++) {
+                    pw.print(p_listaReglas.get(j).antecedentes.get(i) + " ");
+                }
+                pw.print("- ");
+                pw.print(p_listaReglas.get(j).consecuente);
+            }
+            fw.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

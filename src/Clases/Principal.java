@@ -43,12 +43,14 @@ public class Principal {
             } else {
                 while (flag) {
                     switch (opciones(MSG1, 0, 7)) {
-                        case 1: //añadir meta
+                        case 1:
                             añadir_regla();
                             break;
                         case 2:
                             break;
+
                         case 3:
+                            eliminar_regla();
                             break;
                         case 4: //enc. hacia adelante
                             opt = opciones(MSG2, 0, 3); //muestra otro menú de opciones y valida la opción seleccionada
@@ -179,9 +181,30 @@ public class Principal {
 
         //escribir nueva regla en el archivo .txt 
         GestionArchivo ga = new GestionArchivo();
-        ga.escrbirRegla(tmp_reglas);
-
+        //true para no eliminar los datos ya existentes en el archivo
+        ga.escrbirReglas(tmp_reglas, true);
         //escribir nueva regla en archivo maestro
         ga.escribir();
+        JOptionPane.showMessageDialog(null, "Regla añadida correctamente");
+    }
+
+    public static void eliminar_regla() {
+        ArrayList<BaseConocimientos> tmp_reglas;
+        GestionArchivo ga = new GestionArchivo();
+        boolean flag = true;
+        while (flag) {
+            try {
+                String opt = JOptionPane.showInputDialog("Ingrese el número de la regla a eliminar");
+                int num_opt = Integer.parseInt(opt) - 1;
+                tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
+                tmp_reglas.remove(num_opt); //elimina regla
+                ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
+                ga.escribir(); //modificar archivo maestro
+                JOptionPane.showMessageDialog(null, "Regla eliminada correctamente");
+                flag = false;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
+            }
+        }
     }
 }
