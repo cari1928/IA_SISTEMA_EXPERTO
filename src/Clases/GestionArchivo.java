@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -18,7 +20,7 @@ import java.util.StringTokenizer;
 public class GestionArchivo {
 
     BaseConocimientos base_conocimientos;
-    Scanner escritor;
+    Scanner lector;
 
     /**
      * Constante para indicar el nombre del archivo maestro
@@ -26,20 +28,27 @@ public class GestionArchivo {
     public static final String ARCHIVO_MAESTRO = "archivo_maestro";
 
     /**
-     * Método usado para guardar los datos en el archivo binario Solo se utiliza
-     * cuando el archivo de texto se modifica
+     * Método usado para guardar los datos en el archivo binario maestro Solo se
+     * utiliza cuando el archivo de texto se modifica
      *
+     * @param p_listaReglas Ejecución normal = null. Para añadir nueva regla es
+     * ArrayList(BaseConocimientos)
      * @return boolean Indica si la sintáxis de las reglas es correcta
      * @throws java.io.IOException Para en caso de error de lectura
      */
-    public boolean escribir() throws IOException {
-        ArrayList<BaseConocimientos> tmpListaReglas = leerReglas();
-        
-        if(tmpListaReglas == null) { //sintáxis incorrecta
-            return false;
+    public boolean escribir(ArrayList<BaseConocimientos> p_listaReglas) throws IOException {
+        ArrayList<BaseConocimientos> tmpListaReglas = p_listaReglas;
+        boolean flag = true;
+
+        if (p_listaReglas == null) {
+            tmpListaReglas = leerReglas();
+            if (tmpListaReglas == null) { //sintáxis incorrecta
+                return false;
+            }
+            flag = false;
         }
-        
-        try (ObjectOutputStream archivo = new ObjectOutputStream(new FileOutputStream(ARCHIVO_MAESTRO))) {
+
+        try (ObjectOutputStream archivo = new ObjectOutputStream(new FileOutputStream(ARCHIVO_MAESTRO, flag))) {
             for (int i = 0; i < tmpListaReglas.size(); i++) {
                 archivo.writeObject(tmpListaReglas.get(i));
             }
@@ -83,14 +92,14 @@ public class GestionArchivo {
 
         try {
             Scanner verificador = new Scanner(new FileReader(new File("reglas.txt")));
-            escritor = new Scanner(new FileReader(new File("reglas.txt")));
-            
-            if(!verificaReglas(verificador)) { //verifica que la sintáxis de las reglas sea la correcta
+            lector = new Scanner(new FileReader(new File("reglas.txt")));
+
+            if (!verificaReglas(verificador)) { //verifica que la sintáxis de las reglas sea la correcta
                 return null;
             }
 
-            while (escritor.hasNext()) {
-                dato = escritor.next();
+            while (lector.hasNext()) {
+                dato = lector.next();
 
                 if (dato.equals("-")) {
                     flag = true;
@@ -104,7 +113,7 @@ public class GestionArchivo {
                     }
                 }
             }
-            escritor.close();
+            lector.close();
 
             return tmpListaReglas;
         } catch (Exception e) {
@@ -115,7 +124,9 @@ public class GestionArchivo {
 
     /**
      * Verifica que la sintáxis escrita en el archivo reglas.txt sea la correcta
-     * @param verificador Scanner relacionado con reglas.txt para poder obtener dichas reglas del archivo
+     *
+     * @param verificador Scanner relacionado con reglas.txt para poder obtener
+     * dichas reglas del archivo
      * @return boolean false = sintáxis incorrecta
      */
     public boolean verificaReglas(Scanner verificador) {
@@ -126,17 +137,17 @@ public class GestionArchivo {
 
         while (verificador.hasNext()) {
             regla = verificador.nextLine(); //obtiene la regla
-            
+
             count = 0;
             for (int i = 0; i < regla.length(); i++) { //checa que solo haya un - en la regla
-                if(regla.charAt(i) == '-') {
-                  ++count;
+                if (regla.charAt(i) == '-') {
+                    ++count;
                 }
             }
-            if(count != 1) {
+            if (count != 1) {
                 return false;
             }
-            
+
             elementos = regla.split("-"); //separa la regla por -
             //hay más de un guión y éste está seguido de más elementos
             //o no hay -
@@ -160,6 +171,25 @@ public class GestionArchivo {
      */
     public static void main(String[] args) throws IOException {
         new GestionArchivo().leerMaestro();
+    }
+
+    public void escrbirRegla(ArrayList<BaseConocimientos> p_listaReglas) {
+        try {
+            FileWriter fw = new FileWriter("reglas.txt", true);
+            PrintWriter pw = new PrintWriter(fw);
+
+            int num_antecedentes = p_listaReglas.get(0).antecedentes.size();
+            pw.println();
+            for (int i = 0; i < num_antecedentes; i++) {
+                pw.print(p_listaReglas.get(0).antecedentes.get(i) + " ");
+            }
+            pw.print("- ");
+            pw.print(p_listaReglas.get(0).consecuente);
+            fw.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

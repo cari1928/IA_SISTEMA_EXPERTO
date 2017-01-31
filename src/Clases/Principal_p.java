@@ -1,5 +1,6 @@
 package Clases;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -7,10 +8,11 @@ import javax.swing.JOptionPane;
  *
  * @author AlphaGo
  */
-public class Principal {
+public class Principal_p {
 
     public static final String MSG1 = "Seleccione un tipo de Encadenamiento:\n1)Adelante\n2)Salir";
     public static final String MSG2 = "Seleccione:\n1)Con meta\n2)Sin meta";
+    public static final String MSG3 = "Seleccione:\n1)Añadir Meta\n2)Modificar Meta\n3)Eliminar Meta";
 
     /**
      * Inicio de todo el programa
@@ -28,27 +30,16 @@ public class Principal {
                 JOptionPane.showMessageDialog(null, "ERROR, la sintáxis de las reglas es incorrecta");
             } else {
                 while (flag) {
-                    switch (opciones(MSG1, 0, 4)) {
-                        case 1: //enc. hacia adelante
-                            opt = opciones(MSG2, 0, 3);
-                            if (opt == 1) { //con meta
-                                MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-                                JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                                break;
-                            }
-
-                            //sin meta
-                            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-                            JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                            
-                            //podría funcionar solo con poner esto, no?
-//                            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-//                            JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-                            
+                    switch (opciones(MSG3, 0, 4)) {
+                        case 1: //añadir meta
+                            add_rule();
                             break;
-                        case 2: //salida
-                            flag = false;
-                            JOptionPane.showMessageDialog(null, "Cerrando el programa...");
+                        case 2: //modificar meta
+
+                            break;
+
+                        case 3: //eliminar meta
+
                             break;
                     }
                 }
@@ -121,5 +112,42 @@ public class Principal {
                 JOptionPane.showMessageDialog(null, "ERROR, ingrese datos válidos");
             }
         }
+    }
+
+    public static void add_rule() throws IOException {
+        ArrayList<String> tmp_antecedentes = new ArrayList<>();
+        ArrayList<BaseConocimientos> tmp_reglas;
+        String consecuente = "", antecedente = "";
+        boolean flag = true;
+
+        while (flag) {
+            try {
+                antecedente = JOptionPane.showInputDialog("Ingrese un antecedente, presione 0 para terminar");
+                int opt = Integer.parseInt(antecedente);
+
+                if (tmp_antecedentes.size() != 0) {
+                    consecuente = JOptionPane.showInputDialog("Ingrese el consecuente");
+                    flag = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "!No ha ingresado antecedentes!");
+                }
+
+            } catch (Exception e) {
+                tmp_antecedentes.add(antecedente);
+            }
+        }
+
+        tmp_reglas = new ArrayList<>();
+        BaseConocimientos bc = new BaseConocimientos();
+        bc.setAntecedentes(tmp_antecedentes);
+        bc.setConsecuente(consecuente);
+        tmp_reglas.add(bc);
+
+        //escribir nueva regla en el archivo .txt 
+        GestionArchivo ga = new GestionArchivo();
+        ga.escrbirRegla(tmp_reglas);
+
+        //escribir nueva regla en archivo maestro
+        ga.escribir(tmp_reglas);
     }
 }
