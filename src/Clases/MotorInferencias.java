@@ -13,12 +13,23 @@ public class MotorInferencias {
     BaseHechos base_hechos;
     ArrayList<BaseConocimientos> listaPosible;
 
+    /**
+     * Constructor, inicializa BC y BH
+     *
+     * @param base_conocimientos
+     * @param base_hechos
+     */
     public MotorInferencias(ArrayList<BaseConocimientos> base_conocimientos, BaseHechos base_hechos) {
         super();
         this.base_conocimientos = base_conocimientos;
         this.base_hechos = base_hechos; //algoritmo 3.2 linea 1
     }
 
+    /**
+     * Desarrolla el algoritmo de enc. hacia adelante con o sin meta
+     *
+     * @return String éxito o fracaso
+     */
     public String encadenamientoAdelante() {
         ArrayList<Integer> conjuntoConflicto = new ArrayList<>();
         conjuntoConflicto.add(0); //algoritmo 3.2 linea 1
@@ -177,6 +188,11 @@ public class MotorInferencias {
         return true; //no encontrò asterisco
     }
 
+    /**
+     *
+     * @param p_conjuntoConflicto
+     * @return
+     */
     public int resolucion(ArrayList<Integer> p_conjuntoConflicto) {
 //        ArrayList< BaseConocimientos> regla = new ArrayList<>(); //lista de lista de antecedentes
 //
@@ -185,10 +201,15 @@ public class MotorInferencias {
 //            regla.add(base_conocimientos.get(posicion_regla));
 //        }
         //return menorElemento(regla);
-        
+
         return 0; //elemento con menor número en posición 
     }
 
+    /**
+     *
+     * @param lista
+     * @return
+     */
     public int menorElemento(ArrayList< BaseConocimientos> lista) {
         int menor = lista.get(0).getAntecedentes().size();
         BaseConocimientos tmp = lista.get(0);
