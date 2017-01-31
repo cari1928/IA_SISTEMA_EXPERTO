@@ -35,4 +35,5 @@ public class BaseConocimientos implements Serializable {
     public void setConsecuente(String consecuente) {
         this.consecuente = consecuente;
     }
+
 }

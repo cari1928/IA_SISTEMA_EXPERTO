@@ -42,23 +42,28 @@ public class Principal {
                 JOptionPane.showMessageDialog(null, "ERROR, la sintáxis de las reglas es incorrecta");
             } else {
                 while (flag) {
+                    System.out.println("-----------------------------------------------------");
+                    mostrar_BC();
                     switch (opciones(MSG1, 0, 7)) {
                         case 1:
                             añadir_regla();
                             break;
                         case 2:
+                            modificar_regla();
                             break;
-
                         case 3:
                             eliminar_regla();
                             break;
+
                         case 4: //enc. hacia adelante
                             opt = opciones(MSG2, 0, 3); //muestra otro menú de opciones y valida la opción seleccionada
                             MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
                             JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
                             break;
-                        case 5:
+
+                        case 5: //enc. hacia atrás
                             break;
+
                         case 6: //salida
                             flag = false;
                             JOptionPane.showMessageDialog(null, "Cerrando el programa...");
@@ -151,17 +156,82 @@ public class Principal {
      * el archivo maestro
      */
     public static void añadir_regla() throws IOException {
-        ArrayList<String> tmp_antecedentes = new ArrayList<>();
+        ArrayList<BaseConocimientos> tmp_reglas = pedirRegla();
+        //escribir nueva regla en el archivo .txt 
+        GestionArchivo ga = new GestionArchivo();
+        //true para no eliminar los datos ya existentes en el archivo
+        ga.escrbirReglas(tmp_reglas, true);
+        //escribir nueva regla en archivo maestro
+        ga.escribir();
+        JOptionPane.showMessageDialog(null, "Regla añadida correctamente");
+    }
+
+    /**
+     * Elimina una regla indicada por el usuario. Si la regla no existe se sigue
+     * pidiendo dicho dato
+     */
+    public static void eliminar_regla() {
         ArrayList<BaseConocimientos> tmp_reglas;
-        String consecuente = "", antecedente = "";
+        GestionArchivo ga = new GestionArchivo();
+        boolean flag = true;
+        while (flag) {
+            try {
+                String opt = JOptionPane.showInputDialog("Ingrese el número de la regla a eliminar");
+                int num_opt = Integer.parseInt(opt) - 1;
+                tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
+                tmp_reglas.remove(num_opt); //elimina regla                
+                ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
+                ga.escribir(); //modificar archivo maestro
+                JOptionPane.showMessageDialog(null, "Regla eliminada correctamente");
+                flag = false;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
+            }
+        }
+    }
+
+    /**
+     * Modifica una regla especificada por el usuario. Se solicitan los nuevos
+     * antecedentes y consecuente
+     */
+    public static void modificar_regla() {
+        ArrayList<BaseConocimientos> tmp_reglas, tmp_regla;
+        GestionArchivo ga = new GestionArchivo();
         boolean flag = true;
 
         while (flag) {
             try {
-                antecedente = JOptionPane.showInputDialog("Ingrese un antecedente, presione 0 para terminar");
-                int opt = Integer.parseInt(antecedente);
+                String opt = JOptionPane.showInputDialog("Ingrese el número de la regla a modificar");
+                int num_opt = Integer.parseInt(opt) - 1;
+                tmp_regla = pedirRegla(); //obtener la lista con la regla modificada
+                tmp_reglas = ga.leerReglas(); //obtener todas las reglas
+                tmp_reglas.set(num_opt, tmp_regla.get(0)); //modifica el número de registro indicado
+                ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
+                ga.escribir(); //modificar archivo maestro
+                JOptionPane.showMessageDialog(null, "Regla modificada correctamente");
+                flag = false;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
+            }
+        }
+    }
 
-                if (tmp_antecedentes.size() != 0) {
+    /**
+     *
+     * @return
+     */
+    public static ArrayList<BaseConocimientos> pedirRegla() {
+        boolean flag = true;
+        ArrayList<String> tmp_antecedentes = new ArrayList<>();
+        String consecuente = "", antecedente = "";
+        ArrayList<BaseConocimientos> tmp_reglas;
+
+        while (flag) {
+            try {
+                antecedente = JOptionPane.showInputDialog("Ingrese un antecedente, presione 0 para terminar");
+                int opt_antecedentes = Integer.parseInt(antecedente);
+
+                if (!tmp_antecedentes.isEmpty()) {
                     consecuente = JOptionPane.showInputDialog("Ingrese el consecuente");
                     flag = false;
                 } else {
@@ -178,33 +248,14 @@ public class Principal {
         bc.setAntecedentes(tmp_antecedentes);
         bc.setConsecuente(consecuente);
         tmp_reglas.add(bc);
-
-        //escribir nueva regla en el archivo .txt 
-        GestionArchivo ga = new GestionArchivo();
-        //true para no eliminar los datos ya existentes en el archivo
-        ga.escrbirReglas(tmp_reglas, true);
-        //escribir nueva regla en archivo maestro
-        ga.escribir();
-        JOptionPane.showMessageDialog(null, "Regla añadida correctamente");
+        return tmp_reglas;
     }
 
-    public static void eliminar_regla() {
-        ArrayList<BaseConocimientos> tmp_reglas;
+    /**
+     * Muestra el contenido de la base de conocimientos
+     */
+    public static void mostrar_BC() {
         GestionArchivo ga = new GestionArchivo();
-        boolean flag = true;
-        while (flag) {
-            try {
-                String opt = JOptionPane.showInputDialog("Ingrese el número de la regla a eliminar");
-                int num_opt = Integer.parseInt(opt) - 1;
-                tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
-                tmp_reglas.remove(num_opt); //elimina regla
-                ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
-                ga.escribir(); //modificar archivo maestro
-                JOptionPane.showMessageDialog(null, "Regla eliminada correctamente");
-                flag = false;
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
-            }
-        }
+        ga.leerMaestro();
     }
 }

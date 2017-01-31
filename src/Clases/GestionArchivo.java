@@ -67,7 +67,8 @@ public class GestionArchivo {
             }
         } catch (IOException | ClassNotFoundException e) {
         }
-
+        
+        System.out.println("-----------------------------------------------------");
         return tmpListaReglas;
     }
 
