@@ -32,7 +32,8 @@ public class Principal {
      * @param args
      */
     public static void main(String[] args) {
-        GestionArchivo manager_file = new GestionArchivo(); //última versión funcional        
+        GestionArchivo manager_file = new GestionArchivo(); 
+        MotorInferencias mi;
         boolean flag = true;
         Integer opt, opt_menu;
 
@@ -66,11 +67,13 @@ public class Principal {
                                     break;
                                 }
 
-                                MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
-                                JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
+                                mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(opt));
+                                JOptionPane.showMessageDialog(null, mi.encadenamientoAdelante());
                                 break;
 
                             case 5: //enc. hacia atrás
+                                mi = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(1));
+                                JOptionPane.showMessageDialog(null, mi.encadenamientoAtras());
                                 break;
 
                             case 6: //salida
@@ -111,7 +114,7 @@ public class Principal {
                 }
 
             } catch (Exception e) {
-                if (!dato.equals("")) {
+                    if (!dato.equals("")) {
                     hechos_iniciales.add(dato.toLowerCase());
                 }
             }
@@ -125,7 +128,6 @@ public class Principal {
         JOptionPane.showMessageDialog(null, "Iniciando Proceso");
         System.out.println("\nBase de hechos: " + hechos_iniciales);
         System.out.println("Hecho meta: " + meta + "\n");
-        System.out.println("Encadenamiento Hacia Adelante:");
 
         if (type == 2) { //sin meta
             meta = null;
