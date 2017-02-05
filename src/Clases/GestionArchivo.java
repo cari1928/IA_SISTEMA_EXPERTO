@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Clases;
 
 import java.io.File;
@@ -15,12 +20,13 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author AlphaGo
+ * @author Decker
  */
 public class GestionArchivo {
-
+    
     BaseConocimientos base_conocimientos;
     Scanner lector;
+    String msj;
 
     /**
      * Constante para indicar el nombre del archivo maestro
@@ -59,9 +65,12 @@ public class GestionArchivo {
         try {
             try (ObjectInputStream archivo = new ObjectInputStream(new FileInputStream(ARCHIVO_MAESTRO))) {
                 System.out.println("Base de conocimientos:");
+                msj="---------BASE DEL CONOCIMIENTO--------\n\n";
+                
                 for (int i = 0; i < 9; i++) {
                     tmpListaReglas.add((BaseConocimientos) archivo.readObject());
                     System.out.println(tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente());
+                    msj+="Regla "+(i+1)+": "+tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente()+"\n";
                 }
             }
         } catch (Exception e) {
