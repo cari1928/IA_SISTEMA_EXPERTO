@@ -20,10 +20,10 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author Decker
+ * @author Hamburguesas
  */
 public class GestionArchivo {
-    
+
     BaseConocimientos base_conocimientos;
     Scanner lector;
     String msj;
@@ -65,12 +65,12 @@ public class GestionArchivo {
         try {
             try (ObjectInputStream archivo = new ObjectInputStream(new FileInputStream(ARCHIVO_MAESTRO))) {
                 System.out.println("Base de conocimientos:");
-                msj="---------BASE DEL CONOCIMIENTO--------\n\n";
-                
+                msj = "---------BASE DEL CONOCIMIENTO--------\n\n";
+
                 for (int i = 0; i < 9; i++) {
                     tmpListaReglas.add((BaseConocimientos) archivo.readObject());
                     System.out.println(tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente());
-                    msj+="Regla "+(i+1)+": "+tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente()+"\n";
+                    msj += "Regla " + (i) + ": " + tmpListaReglas.get(i).getAntecedentes() + " - " + tmpListaReglas.get(i).getConsecuente() + "\n";
                 }
             }
         } catch (Exception e) {
