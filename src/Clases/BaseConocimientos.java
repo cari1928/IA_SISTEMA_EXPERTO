@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Decker
+ * @author Hamburguesas
  */
 public class BaseConocimientos implements Serializable {
 

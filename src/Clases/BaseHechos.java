@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Decker
+ * @author Hamburguesas
  */
 public class BaseHechos {
      ArrayList<String> base_hechos;

@@ -10,12 +10,13 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Decker
+ * @author Hamburguesas
  */
 public class MotorInferencias {
-   String procedimiento="";
-    
-     ArrayList<BaseConocimientos> base_conocimientos;
+
+    String procedimiento = "";
+
+    ArrayList<BaseConocimientos> base_conocimientos;
     BaseHechos base_hechos;
     ArrayList<BaseConocimientos> listaPosible;
 
@@ -24,42 +25,42 @@ public class MotorInferencias {
         this.base_conocimientos = base_conocimientos;
         this.base_hechos = base_hechos; //algoritmo 3.2 linea 1
     }
-    
-    
-      // nuevo
-    public String encadenamientoAtras(){
-        if(verificar(base_hechos.getMeta(), base_hechos))
+
+    // nuevo
+    public String encadenamientoAtras() {
+        if (verificar(base_hechos.getMeta(), base_hechos)) {
             return "éxito";
-        else{
+        } else {
             return "fracaso";
         }
     }
-    
+
     //nuevo
-    public boolean verificar(String meta, BaseHechos bh){
+    public boolean verificar(String meta, BaseHechos bh) {
         boolean Verificado = false;
         ArrayList<String> nuevasMetas = new ArrayList<>();
-       if(buscaHecho(meta))
-           Verificado = true;
-       else {
-           ArrayList<Integer> CC = equiparaConsecuente(meta);
-           while(!CC.isEmpty() && !Verificado){
-               int r = resolver(CC);
-               CC.remove(CC.indexOf(r));               
-               nuevasMetas = extraeAntecedentes(r);
-               Verificado = true;
-               while(!nuevasMetas.isEmpty() && Verificado){
-                   String Meta = nuevasMetas.get(0);//secuencia anterior
-                   nuevasMetas.remove(0);
-                   Verificado = verificar(Meta, base_hechos);
-                   if (Verificado) {
-                        if(!base_hechos.base_hechos.contains(Meta))
+        if (buscaHecho(meta)) {
+            Verificado = true;
+        } else {
+            ArrayList<Integer> CC = equiparaConsecuente(meta);
+            while (!CC.isEmpty() && !Verificado) {
+                int r = resolver(CC);
+                CC.remove(CC.indexOf(r));
+                nuevasMetas = extraeAntecedentes(r);
+                Verificado = true;
+                while (!nuevasMetas.isEmpty() && Verificado) {
+                    String Meta = nuevasMetas.get(0);//secuencia anterior
+                    nuevasMetas.remove(0);
+                    Verificado = verificar(Meta, base_hechos);
+                    if (Verificado) {
+                        if (!base_hechos.base_hechos.contains(Meta)) {
                             base_hechos.base_hechos.add(Meta);
-                   }                       
-               }
-           }
-       }
-       return Verificado;
+                        }
+                    }
+                }
+            }
+        }
+        return Verificado;
     }
 
     public String encadenamientoAdelante() {
@@ -72,37 +73,40 @@ public class MotorInferencias {
             conjuntoConflicto = equiparacion();
 
             System.out.println("Conjunto conflicto: " + conjuntoConflicto);
-            procedimiento +="\nConjunto conflicto: " + conjuntoConflicto;
+            procedimiento += "\nConjunto conflicto: " + conjuntoConflicto;
             if (!Vacio(conjuntoConflicto)) {
                 int r = resolucion(conjuntoConflicto);
 
                 System.out.println("Regla: " + conjuntoConflicto.get(r));
-                procedimiento +="\nRegla: " + conjuntoConflicto.get(r);
+                procedimiento += "\nRegla: " + conjuntoConflicto.get(r);
                 nuevosHechos = aplicar(conjuntoConflicto.get(r));
 
                 if (!base_hechos.getBase_hechos().contains(nuevosHechos.getConsecuente())) {
                     actualizarBH(nuevosHechos);
                 }
                 System.out.println("BH: " + base_hechos.getBase_hechos() + "\n");
-                procedimiento+="\nBH: " + base_hechos.getBase_hechos() + "\n";
-                
+                procedimiento += "\nBH: " + base_hechos.getBase_hechos() + "\n";
             }
-            
         }
-
         if (Contenida()) {
             return "exito";
         } else {
             if (listaPosible.size() > 0) {
-                hechoUsuario = JOptionPane.showInputDialog("Hace falta un antecedente, por favor ingréselo");
+                hechoUsuario = JOptionPane.showInputDialog("Hace falta un hecho para poder continuar, por favor ingréselo."
+                        + "\nPresione 0 si no hay más hechos");
+
+                if (hechoUsuario.equals("0")) {
+                    procedimiento += "\nBH: " + base_hechos.getBase_hechos() + "\n";
+                    return "fracaso";
+                }
 
                 if (!buscaHecho(hechoUsuario)) {
                     actualizarBH(hechoUsuario);
                 }
                 return encadenamientoAdelante();
             } else {
+                procedimiento += "\nBH: " + base_hechos.getBase_hechos() + "\n";
                 if (base_hechos.getMeta() == null) {
-
                     if (!VacioBH(base_hechos.getBase_hechos())) {
                         String opt = JOptionPane.showInputDialog("¿Alguno es el hecho meta?\n" + base_hechos.getBase_hechos() + "\n1)Si\n2)No");
                         if (opt.equals("1")) { //si
@@ -159,19 +163,18 @@ public class MotorInferencias {
         return p_baseHechos.isEmpty();
     }
 
-     //nuevo
-    private ArrayList<String> extraeAntecedentes(int p_numeRegla){
+    //nuevo
+    private ArrayList<String> extraeAntecedentes(int p_numeRegla) {
         return base_conocimientos.get(p_numeRegla).antecedentes;
     }
-    
+
     //nuevo
-    private String darConsecuente(int p_numeRegla){
+    private String darConsecuente(int p_numeRegla) {
         return base_conocimientos.get(p_numeRegla).getConsecuente();
     }
-    
-    
+
     //nuevo 
-    private ArrayList<Integer> equiparaConsecuente(String p_meta){
+    private ArrayList<Integer> equiparaConsecuente(String p_meta) {
         String tmp_consecuente;
         ArrayList<String> bh = base_hechos.getBase_hechos();
         ArrayList<Integer> tmpConflicto = new ArrayList<>();
@@ -181,18 +184,19 @@ public class MotorInferencias {
         String elementoBH;
         listaPosible = new ArrayList<>();
         boolean p;
-        
+
         //Recorrer reglas
-        for(int i = 0; i < base_conocimientos.size(); i++){
+        for (int i = 0; i < base_conocimientos.size(); i++) {
             p = true;
             tmp_consecuente = base_conocimientos.get(i).consecuente;
-            
-            if(p_meta.equals(tmp_consecuente)){
-                    tmpConflicto.add(i);
+
+            if (p_meta.equals(tmp_consecuente)) {
+                tmpConflicto.add(i);
             }
         }
         return tmpConflicto;
     }
+
     private ArrayList<Integer> equiparacion() {
         ArrayList<String> tmp_antecedentes;
         ArrayList<String> bh = base_hechos.getBase_hechos();
@@ -256,8 +260,9 @@ public class MotorInferencias {
         }
         return true; //no encontrò asterisco
     }
-   //nuevo
-    public int resolver(ArrayList<Integer> p_cc){
+    //nuevo
+
+    public int resolver(ArrayList<Integer> p_cc) {
         return p_cc.get(0);
     }
 
@@ -269,7 +274,7 @@ public class MotorInferencias {
 //            regla.add(base_conocimientos.get(posicion_regla));
 //        }
         //return menorElemento(regla);
-        
+
         return 0; //elemento con menor número en posición 
     }
 

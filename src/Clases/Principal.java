@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Clases;
 
 import java.io.IOException;
@@ -11,14 +6,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-
 /**
  *
- * @author Decker
+ * @author Hamburguesas
  */
 public class Principal extends javax.swing.JFrame {
-GestionArchivo manager_file = new GestionArchivo(); //última versión funcional       
- static String proc;
+    
+    GestionArchivo manager_file = new GestionArchivo(); //última versión funcional       
+    static String proc;
+
     /**
      * Creates new form Principal
      */
@@ -27,11 +23,14 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
         jButton_agregar.setEnabled(false);
         jButton_eliminar.setEnabled(false);
         jButton_modifica.setEnabled(false);
-       
+        jButton1.setEnabled(false);
+        jButton2.setEnabled(false);
+        jButton3.setEnabled(false);
         txtReglas.setEditable(false);
         
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,12 +41,8 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton_agregar = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtReglas = new javax.swing.JTextArea();
-        jButton_modifica = new javax.swing.JButton();
-        jButton_eliminar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtProceso = new javax.swing.JTextArea();
@@ -56,39 +51,20 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
         jButton1 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jButton_agregar = new javax.swing.JButton();
+        jButton_modifica = new javax.swing.JButton();
+        jButton_eliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         ARCHIVO = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton_agregar.setText("Nueva");
-        jButton_agregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_agregarActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        jLabel7.setText("Reglas");
-
         txtReglas.setColumns(20);
         txtReglas.setRows(5);
         jScrollPane2.setViewportView(txtReglas);
-
-        jButton_modifica.setText("Modificar");
-        jButton_modifica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_modificaActionPerformed(evt);
-            }
-        });
-
-        jButton_eliminar.setText("Eliminar");
-        jButton_eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_eliminarActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("Con Meta");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +100,60 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
         jLabel10.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel10.setText("Endadenamiendo Hacia Atras ");
 
+        jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        jLabel7.setText("Reglas");
+
+        jButton_agregar.setText("Nueva");
+        jButton_agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_agregarActionPerformed(evt);
+            }
+        });
+
+        jButton_modifica.setText("Modificar");
+        jButton_modifica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_modificaActionPerformed(evt);
+            }
+        });
+
+        jButton_eliminar.setText("Eliminar");
+        jButton_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_eliminarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton_agregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_modifica, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_eliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_agregar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_modifica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_eliminar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         ARCHIVO.setText("ARCHIVO");
 
         jMenuItem1.setText("CARGAR");
@@ -144,34 +174,23 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(100, 100, 100))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButton_modifica, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(84, 84, 84))))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(49, 49, 49)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jButton1)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jLabel10)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(jButton3)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)))
+                                .addGap(49, 49, 49)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel10)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                     .addComponent(jScrollPane3))
@@ -185,16 +204,9 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton_agregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton_modifica)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton_eliminar))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,37 +222,33 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
                         .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(msjFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_agregarActionPerformed
-      ArrayList<BaseConocimientos> tmp_reglas = pedirRegla();
-
+        ArrayList<BaseConocimientos> tmp_reglas = pedirRegla();
+        
         if (tmp_reglas != null) {
             //escribir nueva regla en el archivo .txt 
             GestionArchivo ga = new GestionArchivo();
             //true para no eliminar los datos ya existentes en el archivo
             ga.escrbirReglas(tmp_reglas, true);
-          try {
-              //escribir nueva regla en archivo maestro
-              ga.escribir();
-          } catch (IOException ex) {
-              Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-          }
+            try {
+                //escribir nueva regla en archivo maestro
+                ga.escribir();
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
             JOptionPane.showMessageDialog(null, "Regla añadida correctamente");
         }
-          manager_file.leerMaestro();
-          txtReglas.setText(manager_file.msj);
+        manager_file.leerMaestro();
+        txtReglas.setText(manager_file.msj);
     }//GEN-LAST:event_jButton_agregarActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-          
-        boolean flag = true;
-        int opt;
-
         try {
             //para modificar el archivo maestro con las nuevas reglas
             if (!manager_file.escribir()) {
@@ -248,26 +256,27 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
             } else {
                 manager_file.leerMaestro();
                 txtReglas.setText(manager_file.msj);
+                jButton_agregar.setEnabled(true);
+                jButton_eliminar.setEnabled(true);
+                jButton_modifica.setEnabled(true);
+                jButton1.setEnabled(true);
+                jButton2.setEnabled(true);
+                jButton3.setEnabled(true);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        jButton_agregar.setEnabled(true);
-        jButton_eliminar.setEnabled(true);
-        jButton_modifica.setEnabled(true);
-        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton_modificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_modificaActionPerformed
-       ArrayList<BaseConocimientos> tmp_reglas, tmp_regla;
+        ArrayList<BaseConocimientos> tmp_reglas, tmp_regla;
         GestionArchivo ga = new GestionArchivo();
         boolean flag = true;
-
+        
         while (flag) {
             try {
                 String opt = JOptionPane.showInputDialog("N°Regla A Modificar");
-
+                
                 if (opt != null) {
                     int num_opt = Integer.parseInt(opt) - 1;
                     tmp_regla = pedirRegla(); //obtener la lista con la regla modificada
@@ -278,24 +287,24 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
                     JOptionPane.showMessageDialog(null, "Regla modificada correctamente");
                 }
                 flag = false;
-
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
             }
         }
         
-         manager_file.leerMaestro();
-          txtReglas.setText(manager_file.msj);
+        manager_file.leerMaestro();
+        txtReglas.setText(manager_file.msj);
     }//GEN-LAST:event_jButton_modificaActionPerformed
 
     private void jButton_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_eliminarActionPerformed
-       ArrayList<BaseConocimientos> tmp_reglas;
+        ArrayList<BaseConocimientos> tmp_reglas;
         GestionArchivo ga = new GestionArchivo();
         boolean flag = true;
         while (flag) {
             try {
                 String opt = JOptionPane.showInputDialog("N°Regla A Eliminar");
-
+                
                 if (opt != null) {
                     int num_opt = Integer.parseInt(opt) - 1;
                     tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
@@ -305,30 +314,30 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
                     JOptionPane.showMessageDialog(null, "Regla Eliminada correctamente");
                 }
                 flag = false;
-
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
             }
         }
-         manager_file.leerMaestro();
-          txtReglas.setText(manager_file.msj);
+        manager_file.leerMaestro();
+        txtReglas.setText(manager_file.msj);
     }//GEN-LAST:event_jButton_eliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String proced;
-
+        
         MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(1));
 
         //JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
         msjFinal.setText(mi_p.encadenamientoAdelante());
         proced = proc + mi_p.procedimiento;
         this.txtProceso.setText(proced);
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String proced;
-
+        
         MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(2));
 
         //JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
@@ -340,8 +349,8 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         String proced;
         MotorInferencias mi_p1 = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(3));
-                            //JOptionPane.showMessageDialog(null, mi_p1.encadenamientoAtras());
-         msjFinal.setText(mi_p1.encadenamientoAtras());
+        //JOptionPane.showMessageDialog(null, mi_p1.encadenamientoAtras());
+        msjFinal.setText(mi_p1.encadenamientoAtras());
         proced = proc + mi_p1.procedimiento;
         this.txtProceso.setText(proced);
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -380,34 +389,34 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
             }
         });
     }
-
+    
     public static ArrayList<BaseConocimientos> pedirRegla() {
         boolean flag = true;
         ArrayList<String> tmp_antecedentes = new ArrayList<>();
         String consecuente = "", antecedente = "";
         ArrayList<BaseConocimientos> tmp_reglas;
-
+        
         while (flag) {
             try {
                 antecedente = JOptionPane.showInputDialog("Ingrese Antecedente de la Regla\nIngrese 0 para terminar");
                 if (antecedente == null) { //presionó Cancelar o la x para salir
                     return null;
                 }
-
+                
                 int opt_antecedentes = Integer.parseInt(antecedente);
-
+                
                 if (!tmp_antecedentes.isEmpty()) {
                     consecuente = JOptionPane.showInputDialog("Ingrese Consecuente de la Regla");
                     flag = false;
                 } else {
                     JOptionPane.showMessageDialog(null, "!No ha ingresado antecedentes!");
                 }
-
+                
             } catch (Exception e) {
                 tmp_antecedentes.add(antecedente);
             }
         }
-
+        
         tmp_reglas = new ArrayList<>();
         BaseConocimientos bc = new BaseConocimientos();
         bc.setAntecedentes(tmp_antecedentes);
@@ -416,17 +425,16 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
         return tmp_reglas;
     }
     
-    
-     public static BaseHechos pedirDatos(int type) {
-         
+    public static BaseHechos pedirDatos(int type) {
+        
         boolean flag = true;
         String meta;
         ArrayList<String> hechos_iniciales = new ArrayList<>(0);
-
+        
         JOptionPane.showMessageDialog(null, "Se solicitarán los Hechos Iniciales");
         while (flag) {
             String dato = JOptionPane.showInputDialog("Ingresa un hecho o escribe 0 para iniciar el proceso");
-
+            
             try {
                 int opcion = Integer.parseInt(dato);
                 if (opcion == 0) {
@@ -434,46 +442,41 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
                 } else {
                     JOptionPane.showMessageDialog(null, "Valor no admitido");
                 }
-
+                
             } catch (Exception e) {
                 if (!dato.equals("")) {
                     hechos_iniciales.add(dato.toLowerCase());
                 }
             }
         }
-
+        
         meta = "Sin meta"; //para mostrarlo en consola
         if (type == 1) { //con meta
             meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
             System.out.println("Encadenamiento Hacia Delante:");
-              proc = "--------Encadenamiento Hacia Delante:--------\n\n";
+            proc = "--------Encadenamiento Hacia Delante:--------\n\n";
         }
         
-        if (type == 3)
-        {
-             System.out.println("Encadenamiento Hacia Atras:");
-              proc = "--------Encadenamiento Hacia Atras:--------\n\n";
-                meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
+        if (type == 3) {
+            System.out.println("Encadenamiento Hacia Atras:");
+            proc = "--------Encadenamiento Hacia Atras:--------\n\n";
+            meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
         }
-       if (type == 2) { //sin meta
-           System.out.println("Encadenamiento Hacia Delante:");
-              proc = "--------Encadenamiento Hacia Delante:--------\n\n";
+        if (type == 2) { //sin meta
+            System.out.println("Encadenamiento Hacia Delante:");
+            proc = "--------Encadenamiento Hacia Delante:--------\n\n";
             meta = null;
         }
         JOptionPane.showMessageDialog(null, "Iniciando Proceso");
         System.out.println("\nBase de hechos: " + hechos_iniciales);
         System.out.println("Hecho meta: " + meta + "\n");
         
-       
-        proc+="Base de hechos: " + hechos_iniciales;
-        proc+= "\nHecho meta: " + meta + "\n";
-        
-        
-
+        proc += "Base de hechos: " + hechos_iniciales;
+        proc += "\nHecho meta: " + meta + "\n";
         
         return new BaseHechos(hechos_iniciales, meta);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu ARCHIVO;
     private javax.swing.JButton jButton1;
@@ -487,6 +490,7 @@ GestionArchivo manager_file = new GestionArchivo(); //última versión funcional
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel msjFinal;
