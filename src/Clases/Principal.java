@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  * @author Hamburguesas
  */
 public class Principal extends javax.swing.JFrame {
-    
+
     GestionArchivo manager_file = new GestionArchivo(); //última versión funcional       
     static String proc;
 
@@ -27,7 +27,7 @@ public class Principal extends javax.swing.JFrame {
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
         txtReglas.setEditable(false);
-        
+
         setLocationRelativeTo(null);
         setResizable(false);
     }
@@ -230,7 +230,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_agregarActionPerformed
         ArrayList<BaseConocimientos> tmp_reglas = pedirRegla();
-        
+
         if (tmp_reglas != null) {
             //escribir nueva regla en el archivo .txt 
             GestionArchivo ga = new GestionArchivo();
@@ -272,27 +272,29 @@ public class Principal extends javax.swing.JFrame {
         ArrayList<BaseConocimientos> tmp_reglas, tmp_regla;
         GestionArchivo ga = new GestionArchivo();
         boolean flag = true;
-        
+
         while (flag) {
             try {
                 String opt = JOptionPane.showInputDialog("N°Regla A Modificar");
-                
+
                 if (opt != null) {
-                    int num_opt = Integer.parseInt(opt) - 1;
+                    int num_opt = Integer.parseInt(opt);
                     tmp_regla = pedirRegla(); //obtener la lista con la regla modificada
-                    tmp_reglas = ga.leerReglas(); //obtener todas las reglas
-                    tmp_reglas.set(num_opt, tmp_regla.get(0)); //modifica el número de registro indicado
-                    ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
-                    ga.escribir(); //modificar archivo maestro
-                    JOptionPane.showMessageDialog(null, "Regla modificada correctamente");
+                    if (tmp_regla != null) {
+                        tmp_reglas = ga.leerReglas(); //obtener todas las reglas
+                        tmp_reglas.set(num_opt, tmp_regla.get(0)); //modifica el número de registro indicado
+                        ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
+                        ga.escribir(); //modificar archivo maestro
+                        JOptionPane.showMessageDialog(null, "Regla modificada correctamente");
+                    }
                 }
                 flag = false;
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
             }
         }
-        
+
         manager_file.leerMaestro();
         txtReglas.setText(manager_file.msj);
     }//GEN-LAST:event_jButton_modificaActionPerformed
@@ -301,12 +303,13 @@ public class Principal extends javax.swing.JFrame {
         ArrayList<BaseConocimientos> tmp_reglas;
         GestionArchivo ga = new GestionArchivo();
         boolean flag = true;
+
         while (flag) {
             try {
                 String opt = JOptionPane.showInputDialog("N°Regla A Eliminar");
-                
+
                 if (opt != null) {
-                    int num_opt = Integer.parseInt(opt) - 1;
+                    int num_opt = Integer.parseInt(opt);
                     tmp_reglas = ga.leerReglas(); //no verificamos que sea null porque anteriormente ya se checó la sintaxis                
                     tmp_reglas.remove(num_opt); //elimina regla                
                     ga.escrbirReglas(tmp_reglas, false); //modificar archivo reglas.txt
@@ -314,7 +317,7 @@ public class Principal extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Regla Eliminada correctamente");
                 }
                 flag = false;
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR, valor no válido");
             }
@@ -324,26 +327,36 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_eliminarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String proced;
-        
-        MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(1));
+        String proced, resultado;
+        BaseHechos tmpBH = pedirDatos(1);
 
-        //JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-        msjFinal.setText(mi_p.encadenamientoAdelante());
-        proced = proc + mi_p.procedimiento;
-        this.txtProceso.setText(proced);
-
+        if (tmpBH != null) {
+            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), tmpBH);
+            resultado = mi_p.encadenamientoAdelante();
+            if (resultado != null) {
+                msjFinal.setText(resultado);
+                proced = proc + mi_p.procedimiento;
+                this.txtProceso.setText(proced);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Procedimiento anulado");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String proced;
-        
-        MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), pedirDatos(2));
-
-        //JOptionPane.showMessageDialog(null, mi_p.encadenamientoAdelante());
-        msjFinal.setText(mi_p.encadenamientoAdelante());
-        proced = proc + mi_p.procedimiento;
-        this.txtProceso.setText(proced);
+        String proced, resultado;
+        BaseHechos tmpBH = pedirDatos(2);
+        if (tmpBH != null) {
+            MotorInferencias mi_p = new MotorInferencias(manager_file.leerMaestro(), tmpBH);
+            resultado = mi_p.encadenamientoAdelante();
+            if (resultado != null) {
+                msjFinal.setText(resultado);
+                proced = proc + mi_p.procedimiento;
+                this.txtProceso.setText(proced);
+            } else {
+                JOptionPane.showMessageDialog(null, "Procedimiento anulado");
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -389,34 +402,36 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static ArrayList<BaseConocimientos> pedirRegla() {
         boolean flag = true;
         ArrayList<String> tmp_antecedentes = new ArrayList<>();
         String consecuente = "", antecedente = "";
         ArrayList<BaseConocimientos> tmp_reglas;
-        
+
         while (flag) {
             try {
                 antecedente = JOptionPane.showInputDialog("Ingrese Antecedente de la Regla\nIngrese 0 para terminar");
                 if (antecedente == null) { //presionó Cancelar o la x para salir
                     return null;
                 }
-                
+
                 int opt_antecedentes = Integer.parseInt(antecedente);
-                
+
                 if (!tmp_antecedentes.isEmpty()) {
                     consecuente = JOptionPane.showInputDialog("Ingrese Consecuente de la Regla");
+                    if (consecuente == null) {
+                        return null;
+                    }
                     flag = false;
                 } else {
                     JOptionPane.showMessageDialog(null, "!No ha ingresado antecedentes!");
                 }
-                
             } catch (Exception e) {
                 tmp_antecedentes.add(antecedente);
             }
         }
-        
+
         tmp_reglas = new ArrayList<>();
         BaseConocimientos bc = new BaseConocimientos();
         bc.setAntecedentes(tmp_antecedentes);
@@ -424,57 +439,69 @@ public class Principal extends javax.swing.JFrame {
         tmp_reglas.add(bc);
         return tmp_reglas;
     }
-    
+
     public static BaseHechos pedirDatos(int type) {
-        
+
         boolean flag = true;
         String meta;
         ArrayList<String> hechos_iniciales = new ArrayList<>(0);
-        
+        String dato = null;
+
         JOptionPane.showMessageDialog(null, "Se solicitarán los Hechos Iniciales");
         while (flag) {
-            String dato = JOptionPane.showInputDialog("Ingresa un hecho o escribe 0 para iniciar el proceso");
-            
+            dato = JOptionPane.showInputDialog("Ingresa un hecho o escribe 0 para iniciar el proceso");
+
             try {
-                int opcion = Integer.parseInt(dato);
-                if (opcion == 0) {
+                if (dato == null) {
                     flag = false;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Valor no admitido");
+                    int opcion = Integer.parseInt(dato);
+                    if (opcion == 0) {
+                        flag = false;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Valor no admitido");
+                    }
                 }
-                
+
             } catch (Exception e) {
                 if (!dato.equals("")) {
                     hechos_iniciales.add(dato.toLowerCase());
                 }
             }
         }
-        
-        meta = "Sin meta"; //para mostrarlo en consola
-        if (type == 1) { //con meta
-            meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
-            System.out.println("Encadenamiento Hacia Delante:");
-            proc = "--------Encadenamiento Hacia Delante:--------\n\n";
+
+        if (dato != null) {
+            meta = "Sin meta"; //para mostrarlo en consola
+            if (type == 1) { //con meta
+                meta = JOptionPane.showInputDialog("Ingresa el hecho meta");
+                if (meta == null) {
+                    return null;
+                }
+                System.out.println("Encadenamiento Hacia Delante:");
+                proc = "--------Encadenamiento Hacia Delante:--------\n\n";
+            }
+
+            if (type == 3) {
+                System.out.println("Encadenamiento Hacia Atras:");
+                proc = "--------Encadenamiento Hacia Atras:--------\n\n";
+                meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
+            }
+            if (type == 2) { //sin meta
+                System.out.println("Encadenamiento Hacia Delante:");
+                proc = "--------Encadenamiento Hacia Delante:--------\n\n";
+                meta = null;
+            }
+            JOptionPane.showMessageDialog(null, "Iniciando Proceso");
+            System.out.println("\nBase de hechos: " + hechos_iniciales);
+            System.out.println("Hecho meta: " + meta + "\n");
+
+            proc += "Base de hechos: " + hechos_iniciales;
+            proc += "\nHecho meta: " + meta + "\n";
+
+            return new BaseHechos(hechos_iniciales, meta);
         }
-        
-        if (type == 3) {
-            System.out.println("Encadenamiento Hacia Atras:");
-            proc = "--------Encadenamiento Hacia Atras:--------\n\n";
-            meta = JOptionPane.showInputDialog("Ingresa el hecho meta").toLowerCase();
-        }
-        if (type == 2) { //sin meta
-            System.out.println("Encadenamiento Hacia Delante:");
-            proc = "--------Encadenamiento Hacia Delante:--------\n\n";
-            meta = null;
-        }
-        JOptionPane.showMessageDialog(null, "Iniciando Proceso");
-        System.out.println("\nBase de hechos: " + hechos_iniciales);
-        System.out.println("Hecho meta: " + meta + "\n");
-        
-        proc += "Base de hechos: " + hechos_iniciales;
-        proc += "\nHecho meta: " + meta + "\n";
-        
-        return new BaseHechos(hechos_iniciales, meta);
+
+        return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

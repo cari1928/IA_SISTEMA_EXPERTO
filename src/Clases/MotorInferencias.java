@@ -38,13 +38,19 @@ public class MotorInferencias {
     //nuevo
     public boolean verificar(String meta, BaseHechos bh) {
         boolean Verificado = false;
-        ArrayList<String> nuevasMetas = new ArrayList<>();
+        ArrayList<String> nuevasMetas;
+
         if (buscaHecho(meta)) {
             Verificado = true;
+
         } else {
             ArrayList<Integer> CC = equiparaConsecuente(meta);
+            procedimiento += "\nConjunto conflicto: " + CC;
+
             while (!CC.isEmpty() && !Verificado) {
                 int r = resolver(CC);
+                procedimiento += "\nRegla: " + r;
+
                 CC.remove(CC.indexOf(r));
                 nuevasMetas = extraeAntecedentes(r);
                 Verificado = true;
@@ -55,6 +61,7 @@ public class MotorInferencias {
                     if (Verificado) {
                         if (!base_hechos.base_hechos.contains(Meta)) {
                             base_hechos.base_hechos.add(Meta);
+                            procedimiento += "\nBH: " + base_hechos.getBase_hechos() + "\n";
                         }
                     }
                 }
@@ -95,6 +102,10 @@ public class MotorInferencias {
                 hechoUsuario = JOptionPane.showInputDialog("Hace falta un hecho para poder continuar, por favor ingréselo."
                         + "\nPresione 0 si no hay más hechos");
 
+                if (hechoUsuario == null) {
+                    return null;
+                }
+
                 if (hechoUsuario.equals("0")) {
                     procedimiento += "\nBH: " + base_hechos.getBase_hechos() + "\n";
                     return "fracaso";
@@ -108,8 +119,10 @@ public class MotorInferencias {
                 procedimiento += "\nBH: " + base_hechos.getBase_hechos() + "\n";
                 if (base_hechos.getMeta() == null) {
                     if (!VacioBH(base_hechos.getBase_hechos())) {
-                        String opt = JOptionPane.showInputDialog("¿Alguno es el hecho meta?\n" + base_hechos.getBase_hechos() + "\n1)Si\n2)No");
-                        if (opt.equals("1")) { //si
+                        String opt = JOptionPane.showInputDialog("Presione 1 si alguno de estos hechos es su meta\n" + base_hechos.getBase_hechos());
+                        if (opt == null) {
+                            return null;
+                        } else if (opt.equals("1")) { //si
                             return "exito";
                         } else {
                             return "fracaso";
