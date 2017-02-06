@@ -65,7 +65,7 @@ public class GestionArchivo {
         try {
             try (ObjectInputStream archivo = new ObjectInputStream(new FileInputStream(ARCHIVO_MAESTRO))) {
                 System.out.println("Base de conocimientos:");
-                msj = "---------BASE DEL CONOCIMIENTO--------\n\n";
+                msj = "---------BASE DE CONOCIMIENTO--------\n\n";
 
                 for (int i = 0; i < 9; i++) {
                     tmpListaReglas.add((BaseConocimientos) archivo.readObject());
